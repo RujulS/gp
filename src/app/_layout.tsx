@@ -31,7 +31,8 @@ export default function RootLayout() {
         <StatusBar style="dark" />
         <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: colors.background } }}>
           <Stack.Screen name="(tabs)" />
-          <Stack.Screen name="menu" options={{ presentation: 'fullScreenModal', animation: 'slide_from_left' }} />
+          {/* a pushed card, not a modal: iOS modals always rise from the bottom and ignore `animation` */}
+          <Stack.Screen name="menu" options={{ animation: 'slide_from_left', gestureEnabled: false }} />
           <Stack.Screen name="profile" options={{ presentation: 'fullScreenModal' }} />
           <Stack.Screen name="trial" options={{ presentation: 'fullScreenModal' }} />
           {/* reachable from inside the profile / trial modals, so it must present above them */}
