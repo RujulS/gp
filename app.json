@@ -1,18 +1,22 @@
 {
   "expo": {
-    "name": "app",
-    "slug": "app",
+    "name": "GP",
+    "slug": "gp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "app",
-    "userInterfaceStyle": "automatic",
+    "scheme": "gp",
+    "userInterfaceStyle": "light",
+    "backgroundColor": "#FEFDFF",
     "ios": {
-      "icon": "./assets/expo.icon"
+      "icon": "./assets/expo.icon",
+      "bundleIdentifier": "com.rujul.gp",
+      "supportsTablet": false
     },
     "android": {
+      "package": "com.rujul.gp",
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
+        "backgroundColor": "#FEFDFF",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
@@ -20,7 +24,7 @@
       "predictiveBackGestureEnabled": false
     },
     "web": {
-      "output": "server",
+      "output": "static",
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
@@ -28,9 +32,23 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#208AEF",
+          "backgroundColor": "#FEFDFF",
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 76
+        }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "GP uses the camera to scan your body measurements and take photos for the Trial Room.",
+          "recordAudioAndroid": false
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "GP uses your photos for your profile picture and the Trial Room.",
+          "cameraPermission": "GP uses the camera to take your profile and Trial Room photos."
         }
       ]
     ],

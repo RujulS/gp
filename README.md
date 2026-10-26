@@ -1,56 +1,34 @@
-# Welcome to your Expo app 👋
+# GP
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Expo (SDK 58) + expo-router app built from the Figma file **GP → Prototype**
+(`MqExVSvDOdm90y3efv7kHh`, node `3239:39471`). One codebase for iOS and Android.
 
-## Get started
-
-1. Install dependencies
-
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **src/app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+## Run
 
 ```bash
-npm run reset-project
+npm install
+npx expo start          # press i (iOS simulator) or a (Android emulator), or scan with Expo Go
 ```
 
-This command will move the starter code to the **example** directory and create a blank **src/app** directory where you can start developing.
+Builds for the stores go through EAS: `npx eas-cli@latest build -p ios|android`.
 
-### Other setup steps
+## Where things are
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+- `src/constants/tokens.ts` — design tokens pulled from Figma (colours, Manrope type scale, spacing, radii, shadows).
+- `src/components/ui.tsx` — shared primitives (text, buttons, header, sheets, dialog, toast).
+- `src/data/catalog.ts` — mock products, prompts, collections, profiles; every value is from the designs.
+- `src/data/images.ts` + `assets/img/` — images exported from Figma, resized to 3× their on-screen size.
+- `src/store/app-store.tsx` — in-memory state (cart, favourites, collections, profiles). Resets on reload.
+- `src/app/` — one route per screen:
+  - `(tabs)/` Home, Search, Favourites (+ collection detail), Account (+ Manage Profile)
+  - `results`, `prompt-history/`, `product/[id]`, `menu`, `checkout`
+  - `profile/` add profile → preferences → measure → scan / manual → confirm → done
+  - `trial/` Trial Room entry → camera → room
+  - `collection/` save-to and create
 
-## Learn more
+## Not real yet (stand-ins)
 
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- **AI search** is keyword matching over the mock catalog (`src/lib/search.ts`).
+- **Body scan** runs the camera flow but returns the design's measurements; no measurement model.
+- **Virtual try-on** shows the design's pre-rendered composites for the outfits they cover (Long Blue Dress, + boots, Abstract Tulle Dress); other picks show a "preview not available" note.
+- No backend, accounts, persistence, payments or voice search.
