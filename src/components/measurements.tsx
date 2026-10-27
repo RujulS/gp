@@ -12,6 +12,9 @@ import { measures, type MeasureKey, type Measurements } from '@/data/catalog';
 
 const fmt = (v: number | undefined) => (v === undefined ? '00' : Number.isInteger(v) ? String(v).padStart(2, '0') : String(v));
 
+// Figma "measurements": 24pt side margins, three 72pt columns spread edge to
+// edge, 41pt between rows; label and value sit 6pt in from the illustration,
+// and the number has a fixed 38pt slot so units line up down each column.
 export function MeasurementGrid({
   values,
   onPick,
@@ -21,27 +24,34 @@ export function MeasurementGrid({
   onPick?: (k: MeasureKey) => void;
   underline?: boolean;
 }) {
+  const rows = [measures.slice(0, 3), measures.slice(3, 6), measures.slice(6, 9)];
   return (
     <View style={styles.grid}>
-      {measures.map((m) => (
-        <Pressable
-          key={m.key}
-          style={styles.cell}
-          onPress={onPick ? () => onPick(m.key) : undefined}
-          disabled={!onPick}
-          accessibilityRole={onPick ? 'button' : 'text'}
-          accessibilityLabel={`${m.label}, ${values[m.key] ?? 'not set'} ${m.unit}`}>
-          <Pic name={m.image} style={{ width: 72, height: 72 }} contentFit="contain" />
-          <T variant="labelRegular" style={{ marginTop: spacing.xs }}>
-            {m.label}
-          </T>
-          <View style={{ flexDirection: 'row', alignItems: 'baseline', gap: spacing.sm }}>
-            <T variant="titleMedium" style={underline ? styles.underline : undefined}>
-              {m.key === 'shoe' && values.shoe !== undefined ? String(values.shoe) : fmt(values[m.key])}
-            </T>
-            <T variant="labelRegular">{m.unit}</T>
-          </View>
-        </Pressable>
+      {rows.map((row) => (
+        <View key={row[0].key} style={styles.row}>
+          {row.map((m) => (
+            <Pressable
+              key={m.key}
+              style={styles.cell}
+              onPress={onPick ? () => onPick(m.key) : undefined}
+              disabled={!onPick}
+              accessibilityRole={onPick ? 'button' : 'text'}
+              accessibilityLabel={`${m.label}, ${values[m.key] ?? 'not set'} ${m.unit}`}>
+              <Pic name={m.image} style={styles.illus} contentFit="contain" />
+              <View style={styles.text}>
+                <T variant="bodyRegular" color={colors.textSecondary} numberOfLines={1}>
+                  {m.label}
+                </T>
+                <View style={styles.value}>
+                  <T variant="headline" style={[styles.number, underline && styles.underline]}>
+                    {m.key === 'shoe' && values.shoe !== undefined ? String(values.shoe) : fmt(values[m.key])}
+                  </T>
+                  <T variant="body">{m.unit}</T>
+                </View>
+              </View>
+            </Pressable>
+          ))}
+        </View>
       ))}
     </View>
   );
@@ -202,8 +212,13 @@ export function bodyTypeFor(v: Partial<Measurements>) {
 }
 
 const styles = StyleSheet.create({
-  grid: { flexDirection: 'row', flexWrap: 'wrap', paddingHorizontal: layout.gutter, rowGap: spacing.xl },
-  cell: { width: '33.33%' },
+  grid: { paddingHorizontal: 24, rowGap: 41 },
+  row: { flexDirection: 'row', justifyContent: 'space-between' },
+  cell: { minWidth: 72 },
+  illus: { width: 72, height: 72 },
+  text: { marginTop: 11, paddingLeft: 6, gap: 4 },
+  value: { flexDirection: 'row', alignItems: 'baseline' },
+  number: { minWidth: 38 },
   underline: { textDecorationLine: 'underline' },
   sheet: {
     backgroundColor: colors.background,

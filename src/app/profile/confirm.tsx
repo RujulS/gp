@@ -1,27 +1,26 @@
 // "measurements" — Confirm Measurements: Edit / Next / Re-Scan.
 import { router } from 'expo-router';
-import { Pressable, ScrollView, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { bodyTypeFor, MeasurementGrid } from '@/components/measurements';
-import { Button, ModalHeader, Screen, T } from '@/components/ui';
-import { colors, layout, spacing } from '@/constants/tokens';
+import { Button, ModalHeader, Screen } from '@/components/ui';
+import { layout, spacing } from '@/constants/tokens';
 import { useApp } from '@/store/app-store';
 
 export default function Confirm() {
   const { draft, updateDraft, commitDraft } = useApp();
+  const insets = useSafeAreaInsets();
   const values = draft.measurements ?? {};
   return (
-    <Screen edges={['top', 'bottom']}>
+    <Screen>
       <ModalHeader title="Confirm Measurements" />
-      <ScrollView contentContainerStyle={{ paddingTop: spacing.lg }}>
+      <ScrollView contentContainerStyle={{ paddingTop: spacing.xl - 4 }}>
         <MeasurementGrid values={values} />
       </ScrollView>
-      <Pressable style={{ alignSelf: 'center', padding: spacing.md }} onPress={() => router.push({ pathname: '/profile/manual', params: { edit: 'draft' } })}>
-        <T variant="labelRegular" color={colors.textMuted}>
-          Edit
-        </T>
-      </Pressable>
-      <View style={{ padding: layout.gutter, gap: spacing.md }}>
+      {/* Edit / Next / Re-Scan: three 44pt rows, 8pt apart, 32pt off the bottom */}
+      <View style={{ paddingHorizontal: layout.gutter, paddingBottom: Math.max(32, insets.bottom), gap: spacing.sm }}>
+        <Button label="Edit" kind="ghost" onPress={() => router.push({ pathname: '/profile/manual', params: { edit: 'draft' } })} />
         <Button
           label="Next"
           onPress={() => {

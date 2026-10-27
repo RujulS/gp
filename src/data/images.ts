@@ -123,6 +123,15 @@ export const img = {
   tryOnBlueDress: require('../../assets/img/try-blue-dress.jpg'),
   tryOnBlueDressBoots: require('../../assets/img/try-blue-dress-boots.jpg'),
   tryOnTulleBoots: require('../../assets/img/try-tulle-boots.jpg'),
+  // Body-scan scenes composited from the 'front prof' / 'side prof1' layers at
+  // their Figma positions (430×932 frame), plus the floor circle and scan frame
+  scanEmpty: require('../../assets/img/scan-empty.jpg'),
+  scanFrontScene: require('../../assets/img/scan-front.jpg'),
+  scanSideScene: require('../../assets/img/scan-side.jpg'),
+  scanCircle: require('../../assets/img/scan-circle-full.png'), // empty floor ('Scan1')
+  scanCircleFront: require('../../assets/img/scan-circle.png'), // gaps where the front-facing feet stand
+  scanCircleSide: require('../../assets/img/scan-circle-side.png'), // gaps for the side-on feet
+  scanFrame: require('../../assets/img/scan-frame.png'),
 } as const;
 
 export type ImageKey = keyof typeof img;
